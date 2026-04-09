@@ -1,844 +1,1215 @@
 <!DOCTYPE html>
 <html lang="pt-BR" data-theme="dark">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Smart Support — Supera Sistemas</title>
-<link rel="icon" type="image/png" href="supera_azul.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  /* ─── LIGHT THEME ─────────────────────────────────────── */
-  :root[data-theme="light"] {
-    --blue-deep:    #0B3D6E;
-    --blue-mid:     #1560A8;
-    --blue-bright:  #2B7FE0;
-    --blue-light:   #E8F2FC;
-    --blue-pale:    #F3F8FE;
-    --accent:       #4FACF7;
-    --text-primary: #0F1C2E;
-    --text-muted:   #6B8BAD;
-    --border:       #D4E6F8;
-    --bg-body:      #F3F8FE;
-    --bg-bubble-bot:#FFFFFF;
-    --bg-input:     #FFFFFF;
-    --bg-input-wrap:#F3F8FE;
-    --bg-suggestion:#FFFFFF;
-    --header-bg:    #0B3D6E;
-    --shadow-sm: 0 1px 3px rgba(11,61,110,0.08), 0 1px 2px rgba(11,61,110,0.04);
-    --shadow-md: 0 4px 16px rgba(11,61,110,0.10), 0 2px 6px rgba(11,61,110,0.06);
-    --welcome-h2:   #0B3D6E;
-    --input-border: #D4E6F8;
-    --input-area-bg:#FFFFFF;
-    --input-area-border: #D4E6F8;
-    --error-bg:     #FDF0EE;
-    --error-border: #f0c0ba;
-    --error-color:  #C0392B;
-    --scrollbar:    #D4E6F8;
-    --toggle-bg:    rgba(255,255,255,0.12);
-    --toggle-border:rgba(255,255,255,0.18);
-    --toggle-color: rgba(255,255,255,0.85);
-    --mic-stroke:   #1560A8;
-    --mic-hover:    #E8F2FC;
-  }
-
-  /* ─── DARK THEME (DEFAULT) ────────────────────────────── */
-  :root[data-theme="dark"] {
-    --blue-deep:    #1e4a7a;
-    --blue-mid:     #3a80c4;
-    --blue-bright:  #4f9fe0;
-    --blue-light:   #1a2d45;
-    --blue-pale:    #111d2c;
-    --accent:       #5fbbff;
-    --text-primary: #d8eaf8;
-    --text-muted:   #6b90b8;
-    --border:       #1e3552;
-    --bg-body:      #0d1720;
-    --bg-bubble-bot:#131f2e;
-    --bg-input:     #131f2e;
-    --bg-input-wrap:#0d1720;
-    --bg-suggestion:#131f2e;
-    --header-bg:    #091525;
-    --shadow-sm: 0 1px 3px rgba(0,0,0,0.35), 0 1px 2px rgba(0,0,0,0.25);
-    --shadow-md: 0 4px 16px rgba(0,0,0,0.40), 0 2px 6px rgba(0,0,0,0.25);
-    --welcome-h2:   #7dc4f5;
-    --input-border: #1e3552;
-    --input-area-bg:#091525;
-    --input-area-border: #1e3552;
-    --error-bg:     #2a1515;
-    --error-border: #6b2a2a;
-    --error-color:  #f08080;
-    --scrollbar:    #1e3552;
-    --toggle-bg:    rgba(255,255,255,0.07);
-    --toggle-border:rgba(255,255,255,0.10);
-    --toggle-color: rgba(255,255,255,0.70);
-    --mic-stroke:   #4f9fe0;
-    --mic-hover:    #1a2d45;
-  }
-
-  html, body {
-    height: 100%;
-    overflow: hidden;
-  }
-
-  body {
-    font-family: 'DM Sans', system-ui, sans-serif;
-    background: var(--bg-body);
-    color: var(--text-primary);
-    display: flex;
-    flex-direction: column;
-    height: 100svh;
-    transition: background 0.3s ease, color 0.3s ease;
-  }
-
-  /* ─── HEADER ─────────────────────────────────────────── */
-  header {
-    background: var(--header-bg);
-    height: 60px;
-    padding: 0 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-shrink: 0;
-    position: relative;
-    z-index: 10;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.35);
-    transition: background 0.3s ease;
-  }
-
-  .header-left {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-
-  .logo-wrap {
-    width: 36px; height: 36px;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-
-  .logo-wrap svg { width: 36px; height: 36px; }
-
-  .divider-v {
-    width: 1px; height: 28px;
-    background: rgba(255,255,255,0.18);
-    flex-shrink: 0;
-  }
-
-  .header-title {
-    font-size: 15px; font-weight: 600; color: #fff;
-    letter-spacing: -0.01em; line-height: 1.2;
-  }
-  .header-subtitle {
-    font-size: 11px; color: var(--accent);
-    font-weight: 400; letter-spacing: 0.02em;
-  }
-
-  .header-right {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .status-pill {
-    display: flex; align-items: center; gap: 6px;
-    background: var(--toggle-bg);
-    border: 1px solid var(--toggle-border);
-    border-radius: 100px;
-    padding: 5px 12px 5px 8px;
-    font-size: 11.5px; color: var(--toggle-color);
-    font-weight: 500; letter-spacing: 0.02em;
-    white-space: nowrap;
-  }
-
-  .status-dot {
-    width: 7px; height: 7px;
-    background: #4BDE80; border-radius: 50%; flex-shrink: 0;
-    box-shadow: 0 0 0 2px rgba(75,222,128,0.3);
-    animation: pulse-dot 2.5s ease infinite;
-  }
-
-  @keyframes pulse-dot {
-    0%, 100% { box-shadow: 0 0 0 2px rgba(75,222,128,0.3); }
-    50% { box-shadow: 0 0 0 4px rgba(75,222,128,0.15); }
-  }
-
-  /* ─── THEME TOGGLE BUTTON ─────────────────────────────── */
-  .theme-toggle {
-    width: 36px; height: 36px;
-    background: var(--toggle-bg);
-    border: 1px solid var(--toggle-border);
-    border-radius: 10px;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: background 0.2s, border-color 0.2s, transform 0.2s;
-    flex-shrink: 0;
-  }
-
-  .theme-toggle:hover {
-    background: rgba(255,255,255,0.15);
-    border-color: rgba(255,255,255,0.25);
-    transform: scale(1.08);
-  }
-
-  .theme-toggle:active { transform: scale(0.95); }
-
-  .theme-toggle svg {
-    width: 17px; height: 17px;
-    transition: opacity 0.2s, transform 0.35s;
-  }
-
-  .icon-sun  { position: absolute; }
-  .icon-moon { position: absolute; }
-
-  .theme-toggle .icon-wrap {
-    position: relative;
-    width: 17px; height: 17px;
-    display: flex; align-items: center; justify-content: center;
-  }
-
-  /* dark mode → show sun (to switch to light) */
-  [data-theme="dark"]  .icon-sun  { opacity: 1; transform: rotate(0deg) scale(1); }
-  [data-theme="dark"]  .icon-moon { opacity: 0; transform: rotate(90deg) scale(0.5); }
-  /* light mode → show moon (to switch to dark) */
-  [data-theme="light"] .icon-sun  { opacity: 0; transform: rotate(-90deg) scale(0.5); }
-  [data-theme="light"] .icon-moon { opacity: 1; transform: rotate(0deg) scale(1); }
-
-  .icon-sun, .icon-moon {
-    transition: opacity 0.3s ease, transform 0.35s ease;
-  }
-
-  /* ─── CHAT AREA ──────────────────────────────────────── */
-  .chat-container {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px 16px 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    scroll-behavior: smooth;
-    overscroll-behavior: contain;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  /* ─── WELCOME ─────────────────────────────────────────── */
-  .welcome {
-    display: flex; flex-direction: column; align-items: center;
-    text-align: center; padding: 28px 8px 16px;
-    max-width: 520px; margin: auto; width: 100%;
-    animation: fadeUp 0.5s ease both;
-  }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(14px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  .welcome-logo-ring {
-    width: 72px; height: 72px; border-radius: 20px;
-    background: linear-gradient(145deg, var(--blue-mid), var(--blue-deep));
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 18px;
-    box-shadow: 0 8px 28px rgba(21,96,168,0.35);
-  }
-
-  .welcome-logo-ring svg { width: 44px; height: 44px; }
-
-  .welcome h2 {
-    font-size: 22px; font-weight: 600; color: var(--welcome-h2);
-    margin-bottom: 8px; letter-spacing: -0.02em;
-    transition: color 0.3s;
-  }
-
-  .welcome p {
-    font-size: 14px; color: var(--text-muted);
-    line-height: 1.65; max-width: 360px; margin-bottom: 28px;
-    transition: color 0.3s;
-  }
-
-  .suggestions-label {
-    font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
-    color: var(--text-muted); text-transform: uppercase;
-    margin-bottom: 10px; align-self: flex-start;
-    width: 100%; text-align: left;
-    transition: color 0.3s;
-  }
-
-  .suggestions {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%;
-  }
-
-  .suggestion-btn {
-    background: var(--bg-suggestion);
-    border: 1px solid var(--border);
-    border-radius: 12px; padding: 12px 14px;
-    font-size: 13px; font-family: 'DM Sans', system-ui, sans-serif;
-    color: var(--blue-mid); cursor: pointer; text-align: left;
-    line-height: 1.45;
-    transition: background 0.18s, border-color 0.18s, transform 0.18s, box-shadow 0.18s, color 0.3s;
-    box-shadow: var(--shadow-sm); font-weight: 500;
-  }
-
-  .suggestion-btn:hover {
-    background: var(--blue-light);
-    border-color: var(--blue-bright);
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-md);
-  }
-
-  .suggestion-btn:active { transform: translateY(0); }
-
-  /* ─── MESSAGES ───────────────────────────────────────── */
-  .message {
-    display: flex; gap: 10px; max-width: 680px;
-    animation: slideIn 0.25s ease both;
-  }
-
-  @keyframes slideIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  .message.user  { align-self: flex-end; flex-direction: row-reverse; max-width: 80%; }
-  .message.bot   { align-self: flex-start; max-width: 85%; }
-
-  .avatar {
-    width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 11px; font-weight: 700; letter-spacing: 0.03em;
-    align-self: flex-end;
-  }
-
-  .avatar.bot {
-    background: var(--blue-deep);
-    overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-    transition: background 0.3s;
-  }
-
-  .avatar.bot svg { width: 22px; height: 22px; }
-
-  .avatar.user {
-    background: linear-gradient(135deg, var(--blue-bright), var(--blue-mid));
-    color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.35); font-size: 12px;
-  }
-
-  .bubble-wrap { display: flex; flex-direction: column; gap: 3px; }
-
-  .bubble { padding: 11px 15px; border-radius: 16px; font-size: 14px; line-height: 1.65; }
-
-  .message.bot .bubble {
-    background: var(--bg-bubble-bot);
-    border: 1px solid var(--border);
-    border-radius: 4px 16px 16px 16px;
-    color: var(--text-primary);
-    box-shadow: var(--shadow-sm);
-    transition: background 0.3s, border-color 0.3s, color 0.3s;
-  }
-
-  .message.user .bubble {
-    background: linear-gradient(145deg, var(--blue-bright), var(--blue-mid));
-    color: #fff; border-radius: 16px 4px 16px 16px;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.35);
-  }
-
-  .bubble strong { font-weight: 600; }
-  .bubble em { font-style: italic; opacity: 0.9; }
-  .bubble ul { padding-left: 18px; margin: 6px 0; }
-  .bubble ul li { margin-bottom: 5px; }
-  .bubble code {
-    font-family: 'DM Mono', monospace; font-size: 12.5px;
-    background: var(--blue-pale); color: var(--blue-mid);
-    padding: 1px 6px; border-radius: 5px; border: 1px solid var(--border);
-    transition: background 0.3s, color 0.3s;
-  }
-
-  .timestamp {
-    font-size: 11px; color: var(--text-muted);
-    padding: 0 2px; opacity: 0.75; transition: color 0.3s;
-  }
-
-  .message.user .timestamp { text-align: right; }
-
-  /* ─── TYPING ─────────────────────────────────────────── */
-  .typing { display: flex; gap: 10px; align-items: flex-end; animation: slideIn 0.25s ease both; }
-
-  .typing-dots {
-    background: var(--bg-bubble-bot);
-    border: 1px solid var(--border);
-    border-radius: 4px 16px 16px 16px;
-    padding: 13px 18px; display: flex; gap: 5px; align-items: center;
-    box-shadow: var(--shadow-sm); transition: background 0.3s, border-color 0.3s;
-  }
-
-  .dot {
-    width: 7px; height: 7px; background: var(--blue-bright);
-    border-radius: 50%; animation: bounce 1.3s ease infinite; opacity: 0.5;
-    transition: background 0.3s;
-  }
-
-  .dot:nth-child(2) { animation-delay: 0.18s; }
-  .dot:nth-child(3) { animation-delay: 0.36s; }
-
-  @keyframes bounce {
-    0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
-    30% { transform: translateY(-6px); opacity: 1; }
-  }
-
-  /* ─── INPUT AREA ─────────────────────────────────────── */
-  .input-area {
-    background: var(--input-area-bg);
-    border-top: 1px solid var(--input-area-border);
-    padding: 14px 16px; flex-shrink: 0;
-    box-shadow: 0 -2px 12px rgba(0,0,0,0.2);
-    transition: background 0.3s, border-color 0.3s;
-  }
-
-  .input-wrapper {
-    max-width: 720px; margin: 0 auto;
-    display: flex; gap: 10px; align-items: flex-end;
-    background: var(--bg-input-wrap);
-    border: 1.5px solid var(--input-border);
-    border-radius: 16px; padding: 8px 8px 8px 14px;
-    transition: border-color 0.2s, box-shadow 0.2s, background 0.3s;
-  }
-
-  .input-wrapper:focus-within {
-    border-color: var(--blue-bright);
-    box-shadow: 0 0 0 3px rgba(79,159,224,0.15);
-    background: var(--bg-input);
-  }
-
-  textarea {
-    flex: 1; border: none; background: transparent;
-    padding: 4px 0; font-size: 14px;
-    font-family: 'DM Sans', system-ui, sans-serif;
-    color: var(--text-primary); resize: none;
-    min-height: 24px; max-height: 110px; line-height: 1.6;
-    outline: none; overflow-y: auto; -webkit-overflow-scrolling: touch;
-    transition: color 0.3s;
-  }
-
-  textarea::placeholder { color: var(--text-muted); }
-
-  /* ─── MIC BUTTON ─────────────────────────────────────── */
-  .mic-btn {
-    width: 38px; height: 38px;
-    background: transparent;
-    border: 1.5px solid var(--border);
-    border-radius: 10px; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0; transition: all 0.18s ease;
-  }
-
-  .mic-btn:hover:not(:disabled) {
-    background: var(--mic-hover);
-    border-color: var(--blue-bright);
-  }
-
-  .mic-btn.recording {
-    background: rgba(239,68,68,0.15);
-    border-color: #EF4444;
-    animation: pulse-mic 1.2s ease infinite;
-  }
-
-  @keyframes pulse-mic {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.3); }
-    50% { box-shadow: 0 0 0 6px rgba(239,68,68,0); }
-  }
-
-  /* ─── SEND BUTTON ────────────────────────────────────── */
-  .send-btn {
-    width: 38px; height: 38px;
-    background: var(--blue-mid);
-    border: none; border-radius: 10px; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0; transition: all 0.18s ease;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-  }
-
-  .send-btn:hover:not(:disabled) { background: var(--blue-deep); transform: scale(1.05); }
-  .send-btn:active:not(:disabled) { transform: scale(0.97); }
-  .send-btn:disabled { background: var(--border); box-shadow: none; cursor: not-allowed; }
-  .send-btn svg { width: 16px; height: 16px; }
-
-  .input-hint {
-    font-size: 11px; color: var(--text-muted); text-align: center;
-    margin-top: 8px; opacity: 0.7; display: block; transition: color 0.3s;
-  }
-
-  /* ─── ERROR ──────────────────────────────────────────── */
-  .error-bubble {
-    background: var(--error-bg);
-    border: 1px solid var(--error-border);
-    color: var(--error-color);
-    border-radius: 4px 16px 16px 16px;
-    padding: 11px 15px; font-size: 13.5px; line-height: 1.55;
-    transition: background 0.3s, border-color 0.3s, color 0.3s;
-  }
-
-  /* ─── SCROLLBAR ──────────────────────────────────────── */
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--scrollbar); border-radius: 4px; }
-  ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
-
-  /* ─── MOBILE ─────────────────────────────────────────── */
-  @media (max-width: 600px) {
-    header { height: 56px; padding: 0 14px; }
-    .logo-wrap { width: 30px; height: 30px; }
-    .logo-wrap svg { width: 30px; height: 30px; }
-    .header-title { font-size: 14px; }
-    .header-subtitle { display: none; }
-    .status-pill span.label { display: none; }
-    .chat-container { padding: 14px 12px 6px; gap: 12px; }
-    .welcome { padding: 16px 0 12px; }
-    .welcome-logo-ring { width: 60px; height: 60px; border-radius: 16px; margin-bottom: 14px; }
-    .welcome-logo-ring svg { width: 36px; height: 36px; }
-    .welcome h2 { font-size: 19px; }
-    .welcome p { font-size: 13.5px; }
-    .suggestions { grid-template-columns: 1fr; }
-    .suggestion-btn { font-size: 13px; padding: 11px 13px; }
-    .message.user { max-width: 90%; }
-    .message.bot { max-width: 92%; }
-    .bubble { font-size: 13.5px; padding: 10px 13px; }
-    .input-area { padding: 10px 12px; }
-    .input-hint { display: none; }
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Smart Support — Supera Sistemas</title>
+  <link rel="icon" type="image/png" href="supera_azul.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ─── LIGHT THEME ─────────────────────────────────────── */
+    :root[data-theme="light"] {
+      --blue-deep: #0B3D6E;
+      --blue-mid: #1560A8;
+      --blue-bright: #2B7FE0;
+      --blue-light: #E8F2FC;
+      --blue-pale: #F3F8FE;
+      --accent: #4FACF7;
+      --text-primary: #0F1C2E;
+      --text-muted: #6B8BAD;
+      --border: #D4E6F8;
+      --bg-body: #F3F8FE;
+      --bg-bubble-bot: #FFFFFF;
+      --bg-input: #FFFFFF;
+      --bg-input-wrap: #F3F8FE;
+      --bg-suggestion: #FFFFFF;
+      --header-bg: #0B3D6E;
+      --shadow-sm: 0 1px 3px rgba(11, 61, 110, 0.08), 0 1px 2px rgba(11, 61, 110, 0.04);
+      --shadow-md: 0 4px 16px rgba(11, 61, 110, 0.10), 0 2px 6px rgba(11, 61, 110, 0.06);
+      --welcome-h2: #0B3D6E;
+      --input-border: #D4E6F8;
+      --input-area-bg: #FFFFFF;
+      --input-area-border: #D4E6F8;
+      --error-bg: #FDF0EE;
+      --error-border: #f0c0ba;
+      --error-color: #C0392B;
+      --scrollbar: #D4E6F8;
+      --toggle-bg: rgba(255, 255, 255, 0.12);
+      --toggle-border: rgba(255, 255, 255, 0.18);
+      --toggle-color: rgba(255, 255, 255, 0.85);
+      --mic-stroke: #1560A8;
+      --mic-hover: #E8F2FC;
+    }
+
+    /* ─── DARK THEME (DEFAULT) ────────────────────────────── */
+    :root[data-theme="dark"] {
+      --blue-deep: #1e4a7a;
+      --blue-mid: #3a80c4;
+      --blue-bright: #4f9fe0;
+      --blue-light: #1a2d45;
+      --blue-pale: #111d2c;
+      --accent: #5fbbff;
+      --text-primary: #d8eaf8;
+      --text-muted: #6b90b8;
+      --border: #1e3552;
+      --bg-body: #0d1720;
+      --bg-bubble-bot: #131f2e;
+      --bg-input: #131f2e;
+      --bg-input-wrap: #0d1720;
+      --bg-suggestion: #131f2e;
+      --header-bg: #091525;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.25);
+      --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.40), 0 2px 6px rgba(0, 0, 0, 0.25);
+      --welcome-h2: #7dc4f5;
+      --input-border: #1e3552;
+      --input-area-bg: #091525;
+      --input-area-border: #1e3552;
+      --error-bg: #2a1515;
+      --error-border: #6b2a2a;
+      --error-color: #f08080;
+      --scrollbar: #1e3552;
+      --toggle-bg: rgba(255, 255, 255, 0.07);
+      --toggle-border: rgba(255, 255, 255, 0.10);
+      --toggle-color: rgba(255, 255, 255, 0.70);
+      --mic-stroke: #4f9fe0;
+      --mic-hover: #1a2d45;
+    }
+
+    html,
+    body {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg-body);
+      color: var(--text-primary);
+      display: flex;
+      flex-direction: column;
+      height: 100svh;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    /* ─── HEADER ─────────────────────────────────────────── */
+    header {
+      background: var(--header-bg);
+      height: 60px;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 10;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+      transition: background 0.3s ease;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo-wrap {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .logo-wrap svg {
+      width: 36px;
+      height: 36px;
+    }
+
+    .divider-v {
+      width: 1px;
+      height: 28px;
+      background: rgba(255, 255, 255, 0.18);
+      flex-shrink: 0;
+    }
+
+    .header-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+
+    .header-subtitle {
+      font-size: 11px;
+      color: var(--accent);
+      font-weight: 400;
+      letter-spacing: 0.02em;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .status-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--toggle-bg);
+      border: 1px solid var(--toggle-border);
+      border-radius: 100px;
+      padding: 5px 12px 5px 8px;
+      font-size: 11.5px;
+      color: var(--toggle-color);
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      background: #4BDE80;
+      border-radius: 50%;
+      flex-shrink: 0;
+      box-shadow: 0 0 0 2px rgba(75, 222, 128, 0.3);
+      animation: pulse-dot 2.5s ease infinite;
+    }
+
+    @keyframes pulse-dot {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 2px rgba(75, 222, 128, 0.3);
+      }
+
+      50% {
+        box-shadow: 0 0 0 4px rgba(75, 222, 128, 0.15);
+      }
+    }
+
+    /* ─── THEME TOGGLE BUTTON ─────────────────────────────── */
+    .theme-toggle {
+      width: 36px;
+      height: 36px;
+      background: var(--toggle-bg);
+      border: 1px solid var(--toggle-border);
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+      flex-shrink: 0;
+    }
+
+    .theme-toggle:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: scale(1.08);
+    }
+
+    .theme-toggle:active {
+      transform: scale(0.95);
+    }
+
+    .theme-toggle svg {
+      width: 17px;
+      height: 17px;
+      transition: opacity 0.2s, transform 0.35s;
+    }
+
+    .icon-sun {
+      position: absolute;
+    }
+
+    .icon-moon {
+      position: absolute;
+    }
+
+    .theme-toggle .icon-wrap {
+      position: relative;
+      width: 17px;
+      height: 17px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* dark mode → show sun (to switch to light) */
+    [data-theme="dark"] .icon-sun {
+      opacity: 1;
+      transform: rotate(0deg) scale(1);
+    }
+
+    [data-theme="dark"] .icon-moon {
+      opacity: 0;
+      transform: rotate(90deg) scale(0.5);
+    }
+
+    /* light mode → show moon (to switch to dark) */
+    [data-theme="light"] .icon-sun {
+      opacity: 0;
+      transform: rotate(-90deg) scale(0.5);
+    }
+
+    [data-theme="light"] .icon-moon {
+      opacity: 1;
+      transform: rotate(0deg) scale(1);
+    }
+
+    .icon-sun,
+    .icon-moon {
+      transition: opacity 0.3s ease, transform 0.35s ease;
+    }
+
+    /* ─── CHAT AREA ──────────────────────────────────────── */
+    .chat-container {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 16px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      scroll-behavior: smooth;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* ─── WELCOME ─────────────────────────────────────────── */
+    .welcome {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 28px 8px 16px;
+      max-width: 520px;
+      margin: auto;
+      width: 100%;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .welcome-logo-ring {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: linear-gradient(145deg, var(--blue-mid), var(--blue-deep));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+      box-shadow: 0 8px 28px rgba(21, 96, 168, 0.35);
+    }
+
+    .welcome-logo-ring svg {
+      width: 44px;
+      height: 44px;
+    }
+
+    .welcome h2 {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--welcome-h2);
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+      transition: color 0.3s;
+    }
+
+    .welcome p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.65;
+      max-width: 360px;
+      margin-bottom: 28px;
+      transition: color 0.3s;
+    }
+
+    .suggestions-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      align-self: flex-start;
+      width: 100%;
+      text-align: left;
+      transition: color 0.3s;
+    }
+
+    .suggestions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .suggestion-btn {
+      background: var(--bg-suggestion);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 13px;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      color: var(--blue-mid);
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.45;
+      transition: background 0.18s, border-color 0.18s, transform 0.18s, box-shadow 0.18s, color 0.3s;
+      box-shadow: var(--shadow-sm);
+      font-weight: 500;
+    }
+
+    .suggestion-btn:hover {
+      background: var(--blue-light);
+      border-color: var(--blue-bright);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .suggestion-btn:active {
+      transform: translateY(0);
+    }
+
+    /* ─── MESSAGES ───────────────────────────────────────── */
+    .message {
+      display: flex;
+      gap: 10px;
+      max-width: 680px;
+      animation: slideIn 0.25s ease both;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .message.user {
+      align-self: flex-end;
+      flex-direction: row-reverse;
+      max-width: 80%;
+    }
+
+    .message.bot {
+      align-self: flex-start;
+      max-width: 85%;
+    }
+
+    .avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      align-self: flex-end;
+    }
+
+    .avatar.bot {
+      background: var(--blue-deep);
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+      transition: background 0.3s;
+    }
+
+    .avatar.bot svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .avatar.user {
+      background: linear-gradient(135deg, var(--blue-bright), var(--blue-mid));
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+      font-size: 12px;
+    }
+
+    .bubble-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .bubble {
+      padding: 11px 15px;
+      border-radius: 16px;
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .message.bot .bubble {
+      background: var(--bg-bubble-bot);
+      border: 1px solid var(--border);
+      border-radius: 4px 16px 16px 16px;
+      color: var(--text-primary);
+      box-shadow: var(--shadow-sm);
+      transition: background 0.3s, border-color 0.3s, color 0.3s;
+    }
+
+    .message.user .bubble {
+      background: linear-gradient(145deg, var(--blue-bright), var(--blue-mid));
+      color: #fff;
+      border-radius: 16px 4px 16px 16px;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.35);
+    }
+
+    .bubble strong {
+      font-weight: 600;
+    }
+
+    .bubble em {
+      font-style: italic;
+      opacity: 0.9;
+    }
+
+    .bubble ul {
+      padding-left: 18px;
+      margin: 6px 0;
+    }
+
+    .bubble ul li {
+      margin-bottom: 5px;
+    }
+
+    .bubble code {
+      font-family: 'DM Mono', monospace;
+      font-size: 12.5px;
+      background: var(--blue-pale);
+      color: var(--blue-mid);
+      padding: 1px 6px;
+      border-radius: 5px;
+      border: 1px solid var(--border);
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .timestamp {
+      font-size: 11px;
+      color: var(--text-muted);
+      padding: 0 2px;
+      opacity: 0.75;
+      transition: color 0.3s;
+    }
+
+    .message.user .timestamp {
+      text-align: right;
+    }
+
+    /* ─── TYPING ─────────────────────────────────────────── */
+    .typing {
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+      animation: slideIn 0.25s ease both;
+    }
+
+    .typing-dots {
+      background: var(--bg-bubble-bot);
+      border: 1px solid var(--border);
+      border-radius: 4px 16px 16px 16px;
+      padding: 13px 18px;
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      box-shadow: var(--shadow-sm);
+      transition: background 0.3s, border-color 0.3s;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      background: var(--blue-bright);
+      border-radius: 50%;
+      animation: bounce 1.3s ease infinite;
+      opacity: 0.5;
+      transition: background 0.3s;
+    }
+
+    .dot:nth-child(2) {
+      animation-delay: 0.18s;
+    }
+
+    .dot:nth-child(3) {
+      animation-delay: 0.36s;
+    }
+
+    @keyframes bounce {
+
+      0%,
+      60%,
+      100% {
+        transform: translateY(0);
+        opacity: 0.4;
+      }
+
+      30% {
+        transform: translateY(-6px);
+        opacity: 1;
+      }
+    }
+
+    /* ─── INPUT AREA ─────────────────────────────────────── */
+    .input-area {
+      background: var(--input-area-bg);
+      border-top: 1px solid var(--input-area-border);
+      padding: 14px 16px;
+      flex-shrink: 0;
+      box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.2);
+      transition: background 0.3s, border-color 0.3s;
+    }
+
+    .input-wrapper {
+      max-width: 720px;
+      margin: 0 auto;
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+      background: var(--bg-input-wrap);
+      border: 1.5px solid var(--input-border);
+      border-radius: 16px;
+      padding: 8px 8px 8px 14px;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.3s;
+    }
+
+    .input-wrapper:focus-within {
+      border-color: var(--blue-bright);
+      box-shadow: 0 0 0 3px rgba(79, 159, 224, 0.15);
+      background: var(--bg-input);
+    }
+
+    textarea {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 4px 0;
+      font-size: 14px;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      color: var(--text-primary);
+      resize: none;
+      min-height: 24px;
+      max-height: 110px;
+      line-height: 1.6;
+      outline: none;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      transition: color 0.3s;
+    }
+
+    textarea::placeholder {
+      color: var(--text-muted);
+    }
+
+    /* ─── MIC BUTTON ─────────────────────────────────────── */
+    .mic-btn {
+      width: 38px;
+      height: 38px;
+      background: transparent;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.18s ease;
+    }
+
+    .mic-btn:hover:not(:disabled) {
+      background: var(--mic-hover);
+      border-color: var(--blue-bright);
+    }
+
+    .mic-btn.recording {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: #EF4444;
+      animation: pulse-mic 1.2s ease infinite;
+    }
+
+    @keyframes pulse-mic {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.3);
+      }
+
+      50% {
+        box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
+      }
+    }
+
+    /* ─── SEND BUTTON ────────────────────────────────────── */
+    .send-btn {
+      width: 38px;
+      height: 38px;
+      background: var(--blue-mid);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.18s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .send-btn:hover:not(:disabled) {
+      background: var(--blue-deep);
+      transform: scale(1.05);
+    }
+
+    .send-btn:active:not(:disabled) {
+      transform: scale(0.97);
+    }
+
+    .send-btn:disabled {
+      background: var(--border);
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    .send-btn svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .input-hint {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 8px;
+      opacity: 0.7;
+      display: block;
+      transition: color 0.3s;
+    }
+
+    /* ─── ERROR ──────────────────────────────────────────── */
+    .error-bubble {
+      background: var(--error-bg);
+      border: 1px solid var(--error-border);
+      color: var(--error-color);
+      border-radius: 4px 16px 16px 16px;
+      padding: 11px 15px;
+      font-size: 13.5px;
+      line-height: 1.55;
+      transition: background 0.3s, border-color 0.3s, color 0.3s;
+    }
+
+    /* ─── SCROLLBAR ──────────────────────────────────────── */
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--scrollbar);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+
+    /* ─── MOBILE ─────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      header {
+        height: 56px;
+        padding: 0 14px;
+      }
+
+      .logo-wrap {
+        width: 30px;
+        height: 30px;
+      }
+
+      .logo-wrap svg {
+        width: 30px;
+        height: 30px;
+      }
+
+      .header-title {
+        font-size: 14px;
+      }
+
+      .header-subtitle {
+        display: none;
+      }
+
+      .status-pill span.label {
+        display: none;
+      }
+
+      .chat-container {
+        padding: 14px 12px 6px;
+        gap: 12px;
+      }
+
+      .welcome {
+        padding: 16px 0 12px;
+      }
+
+      .welcome-logo-ring {
+        width: 60px;
+        height: 60px;
+        border-radius: 16px;
+        margin-bottom: 14px;
+      }
+
+      .welcome-logo-ring svg {
+        width: 36px;
+        height: 36px;
+      }
+
+      .welcome h2 {
+        font-size: 19px;
+      }
+
+      .welcome p {
+        font-size: 13.5px;
+      }
+
+      .suggestions {
+        grid-template-columns: 1fr;
+      }
+
+      .suggestion-btn {
+        font-size: 13px;
+        padding: 11px 13px;
+      }
+
+      .message.user {
+        max-width: 90%;
+      }
+
+      .message.bot {
+        max-width: 92%;
+      }
+
+      .bubble {
+        font-size: 13.5px;
+        padding: 10px 13px;
+      }
+
+      .input-area {
+        padding: 10px 12px;
+      }
+
+      .input-hint {
+        display: none;
+      }
+    }
+
+    .tip-box {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      background: #fff8e6;
+      border: 1px solid #f5c842;
+      border-left: 4px solid #f5c842;
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #7a5c00;
+      margin: 12px 0 20px;
+      line-height: 1.5;
+    }
+
+    [data-theme="dark"] .tip-box {
+      background: #3a2e00;
+      border-color: #c9a000;
+      border-left-color: #c9a000;
+      color: #f0d060;
+    }
+
+    .tip-icon {
+      font-size: 15px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+  </style>
 </head>
+
 <body>
 
-<!-- HEADER -->
-<header>
-  <div class="header-left">
-    <div class="logo-wrap">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 60">
-        <g fill="#ffffff" transform="translate(2.5, 9)">
-          <path d="M45.2 8.8C45.2 4 41.3.1 36.6.1H21.7C15.1.1 13 3.5 13 7.6v1.8c0 2 0 3.9 3.8 6.7l7.9 5.5c1.8 1.4 1.9 2 1.9 2.9V26c0 .7-.4 2.2-3 2.2H9.9c-3.1 0-4.8-1.7-4.8-4.8v-5.1V16v-.8c0-3.1.1-4 3.2-4h2c1.4 0 1.4-1.1 1.4-2.5s.1-2.5-1.4-2.5H7.1C2.3 6.1 0 9.2 0 14v2h0v8.8c0 4.8 3.9 8.6 8.6 8.6h14.9c6.6 0 8.7-3.4 8.7-7.5v-1.8c0-2 0-3.9-3.8-6.7l-7.9-5.5c-1.8-1.4-1.9-2-1.9-2.9V7.5c0-.7.4-2.2 3-2.2h13.6c3.1 0 4.8 1.7 4.8 4.8v7.5h0v.8c0 3.1-.1 4-3.2 4h-2c-1.4 0-1.3 1.1-1.3 2.5s-.1 2.5 1.3 2.5h3.3c4.8 0 7.1-3.1 7.1-7.9v-2h0V8.8h0z"/>
-        </g>
-      </svg>
-    </div>
-    <div class="divider-v"></div>
-    <div class="header-text">
-      <div class="header-title">Smart Support</div>
-      <div class="header-subtitle">Supera Sistemas</div>
-    </div>
-  </div>
-  <div class="header-right">
-    <div class="status-pill">
-      <div class="status-dot"></div>
-      <span class="label">IA Interna</span>
-    </div>
-    <!-- THEME TOGGLE -->
-    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Alternar tema claro/escuro" aria-label="Alternar tema">
-      <div class="icon-wrap">
-        <!-- Sun icon (shown in dark mode to switch to light) -->
-        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="5"/>
-          <line x1="12" y1="1" x2="12" y2="3"/>
-          <line x1="12" y1="21" x2="12" y2="23"/>
-          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-          <line x1="1" y1="12" x2="3" y2="12"/>
-          <line x1="21" y1="12" x2="23" y2="12"/>
-          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-        </svg>
-        <!-- Moon icon (shown in light mode to switch to dark) -->
-        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+  <!-- HEADER -->
+  <header>
+    <div class="header-left">
+      <div class="logo-wrap">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 60">
+          <g fill="#ffffff" transform="translate(2.5, 9)">
+            <path
+              d="M45.2 8.8C45.2 4 41.3.1 36.6.1H21.7C15.1.1 13 3.5 13 7.6v1.8c0 2 0 3.9 3.8 6.7l7.9 5.5c1.8 1.4 1.9 2 1.9 2.9V26c0 .7-.4 2.2-3 2.2H9.9c-3.1 0-4.8-1.7-4.8-4.8v-5.1V16v-.8c0-3.1.1-4 3.2-4h2c1.4 0 1.4-1.1 1.4-2.5s.1-2.5-1.4-2.5H7.1C2.3 6.1 0 9.2 0 14v2h0v8.8c0 4.8 3.9 8.6 8.6 8.6h14.9c6.6 0 8.7-3.4 8.7-7.5v-1.8c0-2 0-3.9-3.8-6.7l-7.9-5.5c-1.8-1.4-1.9-2-1.9-2.9V7.5c0-.7.4-2.2 3-2.2h13.6c3.1 0 4.8 1.7 4.8 4.8v7.5h0v.8c0 3.1-.1 4-3.2 4h-2c-1.4 0-1.3 1.1-1.3 2.5s-.1 2.5 1.3 2.5h3.3c4.8 0 7.1-3.1 7.1-7.9v-2h0V8.8h0z" />
+          </g>
         </svg>
       </div>
-    </button>
-  </div>
-</header>
-
-<!-- CHAT -->
-<div class="chat-container" id="chat">
-  <div class="welcome" id="welcome">
-    <div class="welcome-logo-ring">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 60">
-        <g fill="#ffffff" transform="translate(2.5, 9)">
-          <path d="M45.2 8.8C45.2 4 41.3.1 36.6.1H21.7C15.1.1 13 3.5 13 7.6v1.8c0 2 0 3.9 3.8 6.7l7.9 5.5c1.8 1.4 1.9 2 1.9 2.9V26c0 .7-.4 2.2-3 2.2H9.9c-3.1 0-4.8-1.7-4.8-4.8v-5.1V16v-.8c0-3.1.1-4 3.2-4h2c1.4 0 1.4-1.1 1.4-2.5s.1-2.5-1.4-2.5H7.1C2.3 6.1 0 9.2 0 14v2h0v8.8c0 4.8 3.9 8.6 8.6 8.6h14.9c6.6 0 8.7-3.4 8.7-7.5v-1.8c0-2 0-3.9-3.8-6.7l-7.9-5.5c-1.8-1.4-1.9-2-1.9-2.9V7.5c0-.7.4-2.2 3-2.2h13.6c3.1 0 4.8 1.7 4.8 4.8v7.5h0v.8c0 3.1-.1 4-3.2 4h-2c-1.4 0-1.3 1.1-1.3 2.5s-.1 2.5 1.3 2.5h3.3c4.8 0 7.1-3.1 7.1-7.9v-2h0V8.8h0z"/>
-        </g>
-      </svg>
+      <div class="divider-v"></div>
+      <div class="header-text">
+        <div class="header-title">Smart Support</div>
+        <div class="header-subtitle">Supera Sistemas</div>
+      </div>
     </div>
-    <h2>Olá! Sou o Smart Support</h2>
-    <p>Consulte chamados, status, desenvolvimentos e histórico de atividades da Supera Sistemas com linguagem natural.</p>
-    <div class="suggestions-label">Sugestões de consulta</div>
-    <div class="suggestions">
-      <button class="suggestion-btn" onclick="useSuggestion(this)">Em que etapa está o chamado CC-1329?</button>
-      <button class="suggestion-btn" onclick="useSuggestion(this)">Quais chamados estão em aberto hoje?</button>
-      <button class="suggestion-btn" onclick="useSuggestion(this)">O que foi corrigido no CC-1329?</button>
-      <button class="suggestion-btn" onclick="useSuggestion(this)">Chamados atribuídos ao Bernardo</button>
+    <div class="header-right">
+      <div class="status-pill">
+        <div class="status-dot"></div>
+        <span class="label">IA Interna</span>
+      </div>
+      <!-- THEME TOGGLE -->
+      <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Alternar tema claro/escuro"
+        aria-label="Alternar tema">
+        <div class="icon-wrap">
+          <!-- Sun icon (shown in dark mode to switch to light) -->
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5" />
+            <line x1="12" y1="1" x2="12" y2="3" />
+            <line x1="12" y1="21" x2="12" y2="23" />
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+            <line x1="1" y1="12" x2="3" y2="12" />
+            <line x1="21" y1="12" x2="23" y2="12" />
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+          </svg>
+          <!-- Moon icon (shown in light mode to switch to dark) -->
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+          </svg>
+        </div>
+      </button>
+    </div>
+  </header>
+
+  <!-- CHAT -->
+  <div class="chat-container" id="chat">
+    <div class="welcome" id="welcome">
+      <div class="welcome-logo-ring">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 60">
+          <g fill="#ffffff" transform="translate(2.5, 9)">
+            <path
+              d="M45.2 8.8C45.2 4 41.3.1 36.6.1H21.7C15.1.1 13 3.5 13 7.6v1.8c0 2 0 3.9 3.8 6.7l7.9 5.5c1.8 1.4 1.9 2 1.9 2.9V26c0 .7-.4 2.2-3 2.2H9.9c-3.1 0-4.8-1.7-4.8-4.8v-5.1V16v-.8c0-3.1.1-4 3.2-4h2c1.4 0 1.4-1.1 1.4-2.5s.1-2.5-1.4-2.5H7.1C2.3 6.1 0 9.2 0 14v2h0v8.8c0 4.8 3.9 8.6 8.6 8.6h14.9c6.6 0 8.7-3.4 8.7-7.5v-1.8c0-2 0-3.9-3.8-6.7l-7.9-5.5c-1.8-1.4-1.9-2-1.9-2.9V7.5c0-.7.4-2.2 3-2.2h13.6c3.1 0 4.8 1.7 4.8 4.8v7.5h0v.8c0 3.1-.1 4-3.2 4h-2c-1.4 0-1.3 1.1-1.3 2.5s-.1 2.5 1.3 2.5h3.3c4.8 0 7.1-3.1 7.1-7.9v-2h0V8.8h0z" />
+          </g>
+        </svg>
+      </div>
+      <h2>Olá! Sou o Smart Support</h2>
+      <p>Consulte chamados, status, desenvolvimentos e histórico de atividades da Supera Sistemas com linguagem natural.
+      </p>
+
+      <div class="tip-box">
+        <span class="tip-icon">💡</span>
+        <span>Para melhores resultados, seja específico: informe o número do chamado, projeto, período ou problema
+          exato. Perguntas genéricas podem trazer resultados menos precisos.</span>
+      </div>
+
+      <div class="suggestions-label">Sugestões de consulta</div>
+      <div class="suggestions">
+        <button class="suggestion-btn" onclick="useSuggestion(this)">Em que etapa está o chamado CC-1329?</button>
+        <button class="suggestion-btn" onclick="useSuggestion(this)">Quais chamados estão em aberto hoje?</button>
+        <button class="suggestion-btn" onclick="useSuggestion(this)">O que foi corrigido no CC-1329?</button>
+        <button class="suggestion-btn" onclick="useSuggestion(this)">Chamados atribuídos ao Bernardo</button>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- INPUT -->
-<div class="input-area">
-  <div class="input-wrapper">
-    <textarea
-      id="input"
-      placeholder="Pergunte sobre chamados, status, histórico..."
-      rows="1"
-      onkeydown="handleKey(event)"
-      oninput="autoResize(this)"
-    ></textarea>
-    <button class="mic-btn" id="micBtn" onclick="toggleMic()" title="Gravar pergunta por voz">
-      <svg id="micIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--mic-stroke)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="9" y="2" width="6" height="11" rx="3"/>
-        <path d="M5 10a7 7 0 0014 0"/>
-        <line x1="12" y1="21" x2="12" y2="17"/> 
-        <line x1="9" y1="21" x2="15" y2="21"/>
-      </svg>
-    </button>
-    <button class="send-btn" id="sendBtn" onclick="sendMessage()" title="Enviar">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="22" y1="2" x2="11" y2="13"/>
-        <polygon points="22 2 15 22 11 13 2 9 22 2" fill="#fff" stroke="none"/>
-      </svg>
-    </button>
+  <!-- INPUT -->
+  <div class="input-area">
+    <div class="input-wrapper">
+      <textarea id="input" placeholder="Pergunte sobre chamados, status, histórico..." rows="1"
+        onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+      <button class="mic-btn" id="micBtn" onclick="toggleMic()" title="Gravar pergunta por voz">
+        <svg id="micIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--mic-stroke)"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="9" y="2" width="6" height="11" rx="3" />
+          <path d="M5 10a7 7 0 0014 0" />
+          <line x1="12" y1="21" x2="12" y2="17" />
+          <line x1="9" y1="21" x2="15" y2="21" />
+        </svg>
+      </button>
+      <button class="send-btn" id="sendBtn" onclick="sendMessage()" title="Enviar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13" />
+          <polygon points="22 2 15 22 11 13 2 9 22 2" fill="#fff" stroke="none" />
+        </svg>
+      </button>
+    </div>
+    <span class="input-hint">Enter para enviar · Shift+Enter para nova linha · Microfone para voz</span>
   </div>
-  <span class="input-hint">Enter para enviar · Shift+Enter para nova linha · Microfone para voz</span>
-</div>
 
-<script>
-  const WEBHOOK = 'https://fluxo.superaentidades.com.br/webhook/consulta';
-  const chat    = document.getElementById('chat');
-  const input   = document.getElementById('input');
-  const sendBtn = document.getElementById('sendBtn');
-  let isLoading = false;
-  let recognition = null;
+  <script>
+    const WEBHOOK = 'https://fluxo.superaentidades.com.br/webhook/consulta';
+    const chat = document.getElementById('chat');
+    const input = document.getElementById('input');
+    const sendBtn = document.getElementById('sendBtn');
+    let isLoading = false;
+    let recognition = null;
 
-  /* ─── THEME ──────────────────────────────────────────── */
-  function toggleTheme() {
-    const html = document.documentElement;
-    const current = html.getAttribute('data-theme');
-    const next = current === 'dark' ? 'light' : 'dark';
-    html.setAttribute('data-theme', next);
-    localStorage.setItem('ss_theme', next);
-  }
+    /* ─── THEME ──────────────────────────────────────────── */
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('ss_theme', next);
+    }
 
-  // Load saved theme (default: dark)
-  (function() {
-    const saved = localStorage.getItem('ss_theme') || 'dark';
-    document.documentElement.setAttribute('data-theme', saved);
-  })();
+    // Load saved theme (default: dark)
+    (function () {
+      const saved = localStorage.getItem('ss_theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', saved);
+    })();
 
-  /* ─── UTILS ──────────────────────────────────────────── */
-  function now() {
-    return new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-  }
+    /* ─── UTILS ──────────────────────────────────────────── */
+    function now() {
+      return new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    }
 
-  function autoResize(el) {
-    el.style.height = 'auto';
-    el.style.height = Math.min(el.scrollHeight, 110) + 'px';
-  }
+    function autoResize(el) {
+      el.style.height = 'auto';
+      el.style.height = Math.min(el.scrollHeight, 110) + 'px';
+    }
 
-  function handleKey(e) {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
+    function handleKey(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    }
+
+    function useSuggestion(btn) {
+      input.value = btn.textContent.trim();
+      autoResize(input);
       sendMessage();
     }
-  }
 
-  function useSuggestion(btn) {
-    input.value = btn.textContent.trim();
-    autoResize(input);
-    sendMessage();
-  }
-
-  function removeWelcome() {
-    const w = document.getElementById('welcome');
-    if (w) { w.style.transition = 'opacity 0.2s'; w.style.opacity = '0'; setTimeout(() => w.remove(), 200); }
-  }
-
-  const BOT_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 60" style="width:22px;height:22px"><g fill="#ffffff" transform="translate(2.5,9)"><path d="M45.2 8.8C45.2 4 41.3.1 36.6.1H21.7C15.1.1 13 3.5 13 7.6v1.8c0 2 0 3.9 3.8 6.7l7.9 5.5c1.8 1.4 1.9 2 1.9 2.9V26c0 .7-.4 2.2-3 2.2H9.9c-3.1 0-4.8-1.7-4.8-4.8v-5.1V16v-.8c0-3.1.1-4 3.2-4h2c1.4 0 1.4-1.1 1.4-2.5s.1-2.5-1.4-2.5H7.1C2.3 6.1 0 9.2 0 14v2h0v8.8c0 4.8 3.9 8.6 8.6 8.6h14.9c6.6 0 8.7-3.4 8.7-7.5v-1.8c0-2 0-3.9-3.8-6.7l-7.9-5.5c-1.8-1.4-1.9-2-1.9-2.9V7.5c0-.7.4-2.2 3-2.2h13.6c3.1 0 4.8 1.7 4.8 4.8v7.5h0v.8c0 3.1-.1 4-3.2 4h-2c-1.4 0-1.3 1.1-1.3 2.5s-.1 2.5 1.3 2.5h3.3c4.8 0 7.1-3.1 7.1-7.9v-2h0V8.8h0z"/></g></svg>`;
-
-  function addMessage(text, role) {
-    removeWelcome();
-    const msg = document.createElement('div');
-    msg.className = `message ${role}`;
-
-    const avatar = document.createElement('div');
-    avatar.className = `avatar ${role}`;
-
-    if (role === 'bot') {
-      avatar.innerHTML = BOT_SVG;
-    } else {
-      avatar.textContent = 'EU';
+    function removeWelcome() {
+      const w = document.getElementById('welcome');
+      if (w) { w.style.transition = 'opacity 0.2s'; w.style.opacity = '0'; setTimeout(() => w.remove(), 200); }
     }
 
-    const bubble = document.createElement('div');
-    bubble.className = 'bubble';
+    const BOT_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 60" style="width:22px;height:22px"><g fill="#ffffff" transform="translate(2.5,9)"><path d="M45.2 8.8C45.2 4 41.3.1 36.6.1H21.7C15.1.1 13 3.5 13 7.6v1.8c0 2 0 3.9 3.8 6.7l7.9 5.5c1.8 1.4 1.9 2 1.9 2.9V26c0 .7-.4 2.2-3 2.2H9.9c-3.1 0-4.8-1.7-4.8-4.8v-5.1V16v-.8c0-3.1.1-4 3.2-4h2c1.4 0 1.4-1.1 1.4-2.5s.1-2.5-1.4-2.5H7.1C2.3 6.1 0 9.2 0 14v2h0v8.8c0 4.8 3.9 8.6 8.6 8.6h14.9c6.6 0 8.7-3.4 8.7-7.5v-1.8c0-2 0-3.9-3.8-6.7l-7.9-5.5c-1.8-1.4-1.9-2-1.9-2.9V7.5c0-.7.4-2.2 3-2.2h13.6c3.1 0 4.8 1.7 4.8 4.8v7.5h0v.8c0 3.1-.1 4-3.2 4h-2c-1.4 0-1.3 1.1-1.3 2.5s-.1 2.5 1.3 2.5h3.3c4.8 0 7.1-3.1 7.1-7.9v-2h0V8.8h0z"/></g></svg>`;
 
-    if (role === 'bot') {
-      bubble.innerHTML = formatMessage(text);
-    } else {
-      bubble.textContent = text;
+    function addMessage(text, role) {
+      removeWelcome();
+      const msg = document.createElement('div');
+      msg.className = `message ${role}`;
+
+      const avatar = document.createElement('div');
+      avatar.className = `avatar ${role}`;
+
+      if (role === 'bot') {
+        avatar.innerHTML = BOT_SVG;
+      } else {
+        avatar.textContent = 'EU';
+      }
+
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble';
+
+      if (role === 'bot') {
+        bubble.innerHTML = formatMessage(text);
+      } else {
+        bubble.textContent = text;
+      }
+
+      const ts = document.createElement('div');
+      ts.className = 'timestamp';
+      ts.textContent = now();
+
+      const wrap = document.createElement('div');
+      wrap.className = 'bubble-wrap';
+      wrap.appendChild(bubble);
+      wrap.appendChild(ts);
+
+      msg.appendChild(avatar);
+      msg.appendChild(wrap);
+      chat.appendChild(msg);
+      chat.scrollTop = chat.scrollHeight;
+      return msg;
     }
 
-    const ts = document.createElement('div');
-    ts.className = 'timestamp';
-    ts.textContent = now();
-
-    const wrap = document.createElement('div');
-    wrap.className = 'bubble-wrap';
-    wrap.appendChild(bubble);
-    wrap.appendChild(ts);
-
-    msg.appendChild(avatar);
-    msg.appendChild(wrap);
-    chat.appendChild(msg);
-    chat.scrollTop = chat.scrollHeight;
-    return msg;
-  }
-
-  function addTyping() {
-    removeWelcome();
-    const el = document.createElement('div');
-    el.className = 'typing';
-    el.id = 'typing';
-    el.innerHTML = `
+    function addTyping() {
+      removeWelcome();
+      const el = document.createElement('div');
+      el.className = 'typing';
+      el.id = 'typing';
+      el.innerHTML = `
       <div class="avatar bot">${BOT_SVG}</div>
       <div class="typing-dots">
         <div class="dot"></div>
         <div class="dot"></div>
         <div class="dot"></div>
       </div>`;
-    chat.appendChild(el);
-    chat.scrollTop = chat.scrollHeight;
-  }
-
-  function removeTyping() {
-    const el = document.getElementById('typing');
-    if (el) el.remove();
-  }
-
-  function formatMessage(text) {
-    return text
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*(.*?)\*/g, '<em>$1</em>')
-      .replace(/`([^`]+)`/g, '<code>$1</code>')
-      .replace(/^### (.+)$/gm, '<strong style="font-size:11px;color:var(--blue-mid);text-transform:uppercase;letter-spacing:0.07em;display:block;margin:10px 0 4px">$1</strong>')
-      .replace(/^## (.+)$/gm, '<strong style="font-size:15px;color:var(--welcome-h2);display:block;margin:8px 0 4px">$1</strong>')
-      .replace(/^# (.+)$/gm, '<strong style="font-size:16px;color:var(--welcome-h2);display:block;margin:8px 0 4px">$1</strong>')
-      .replace(/^[\*\-] (.+)$/gm, '<li>$1</li>')
-      .replace(/(<li>[\s\S]*?<\/li>)/g, '<ul>$1</ul>')
-      .replace(/\n\n/g, '<br><br>')
-      .replace(/\n/g, '<br>');
-  }
-
-  /* ─── MIC ────────────────────────────────────────────── */
-  function toggleMic() {
-    const btn = document.getElementById('micBtn');
-    const icon = document.getElementById('micIcon');
-
-    if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
-      alert('Seu browser não suporta reconhecimento de voz. Use Chrome ou Edge.');
-      return;
-    }
-
-    if (recognition) {
-      recognition.stop();
-      recognition = null;
-      btn.classList.remove('recording');
-      icon.setAttribute('stroke', 'var(--mic-stroke)');
-      return;
-    }
-
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    recognition = new SR();
-    recognition.lang = 'pt-BR';
-    recognition.interimResults = false;
-    recognition.continuous = false;
-
-    btn.classList.add('recording');
-    icon.setAttribute('stroke', '#EF4444');
-    recognition.start();
-
-    recognition.onresult = (e) => {
-      const transcript = e.results[0][0].transcript;
-      input.value = transcript;
-      autoResize(input);
-    };
-
-    recognition.onend = () => {
-      btn.classList.remove('recording');
-      icon.setAttribute('stroke', 'var(--mic-stroke)');
-      recognition = null;
-    };
-
-    recognition.onerror = () => {
-      btn.classList.remove('recording');
-      icon.setAttribute('stroke', 'var(--mic-stroke)');
-      recognition = null;
-    };
-  }
-
-  /* ─── SEND ───────────────────────────────────────────── */
-  async function sendMessage() {
-    const text = input.value.trim();
-    if (!text || isLoading) return;
-
-    isLoading = true;
-    sendBtn.disabled = true;
-    input.value = '';
-    input.style.height = 'auto';
-
-    addMessage(text, 'user');
-    addTyping();
-
-    try {
-      const sessionId = localStorage.getItem('ss_session') || (() => {
-        const id = Date.now().toString(36) + Math.random().toString(36).slice(2);
-        localStorage.setItem('ss_session', id);
-        return id;
-      })();
-
-      const res = await fetch(WEBHOOK, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chatInput: text, sessionId: 'session_' + sessionId })
-      });
-
-      if (!res.ok) throw new Error(`Erro ${res.status}`);
-
-      const data = await res.json();
-      removeTyping();
-
-      const resposta = data.resposta || data.output || data.message || JSON.stringify(data);
-      addMessage(resposta, 'bot');
-
-    } catch (err) {
-      removeTyping();
-      removeWelcome();
-      const msg = document.createElement('div');
-      msg.className = 'message bot';
-      msg.innerHTML = `
-        <div class="avatar bot">${BOT_SVG}</div>
-        <div class="error-bubble">Não foi possível conectar ao servidor. Verifique sua conexão e tente novamente.</div>`;
-      chat.appendChild(msg);
+      chat.appendChild(el);
       chat.scrollTop = chat.scrollHeight;
     }
 
-    isLoading = false;
-    sendBtn.disabled = false;
+    function removeTyping() {
+      const el = document.getElementById('typing');
+      if (el) el.remove();
+    }
+
+    function formatMessage(text) {
+      return text
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
+        .replace(/^### (.+)$/gm, '<strong style="font-size:11px;color:var(--blue-mid);text-transform:uppercase;letter-spacing:0.07em;display:block;margin:10px 0 4px">$1</strong>')
+        .replace(/^## (.+)$/gm, '<strong style="font-size:15px;color:var(--welcome-h2);display:block;margin:8px 0 4px">$1</strong>')
+        .replace(/^# (.+)$/gm, '<strong style="font-size:16px;color:var(--welcome-h2);display:block;margin:8px 0 4px">$1</strong>')
+        .replace(/^[\*\-] (.+)$/gm, '<li>$1</li>')
+        .replace(/(<li>[\s\S]*?<\/li>)/g, '<ul>$1</ul>')
+        .replace(/\n\n/g, '<br><br>')
+        .replace(/\n/g, '<br>');
+    }
+
+    /* ─── MIC ────────────────────────────────────────────── */
+    function toggleMic() {
+      const btn = document.getElementById('micBtn');
+      const icon = document.getElementById('micIcon');
+
+      if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+        alert('Seu browser não suporta reconhecimento de voz. Use Chrome ou Edge.');
+        return;
+      }
+
+      if (recognition) {
+        recognition.stop();
+        recognition = null;
+        btn.classList.remove('recording');
+        icon.setAttribute('stroke', 'var(--mic-stroke)');
+        return;
+      }
+
+      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognition = new SR();
+      recognition.lang = 'pt-BR';
+      recognition.interimResults = false;
+      recognition.continuous = false;
+
+      btn.classList.add('recording');
+      icon.setAttribute('stroke', '#EF4444');
+      recognition.start();
+
+      recognition.onresult = (e) => {
+        const transcript = e.results[0][0].transcript;
+        input.value = transcript;
+        autoResize(input);
+      };
+
+      recognition.onend = () => {
+        btn.classList.remove('recording');
+        icon.setAttribute('stroke', 'var(--mic-stroke)');
+        recognition = null;
+      };
+
+      recognition.onerror = () => {
+        btn.classList.remove('recording');
+        icon.setAttribute('stroke', 'var(--mic-stroke)');
+        recognition = null;
+      };
+    }
+
+    /* ─── SEND ───────────────────────────────────────────── */
+    async function sendMessage() {
+      const text = input.value.trim();
+      if (!text || isLoading) return;
+
+      isLoading = true;
+      sendBtn.disabled = true;
+      input.value = '';
+      input.style.height = 'auto';
+
+      addMessage(text, 'user');
+      addTyping();
+
+      try {
+        const sessionId = localStorage.getItem('ss_session') || (() => {
+          const id = Date.now().toString(36) + Math.random().toString(36).slice(2);
+          localStorage.setItem('ss_session', id);
+          return id;
+        })();
+
+        const res = await fetch(WEBHOOK, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chatInput: text, sessionId: 'session_' + sessionId })
+        });
+
+        if (!res.ok) throw new Error(`Erro ${res.status}`);
+
+        const data = await res.json();
+        removeTyping();
+
+        const resposta = data.resposta || data.output || data.message || JSON.stringify(data);
+        addMessage(resposta, 'bot');
+
+      } catch (err) {
+        removeTyping();
+        removeWelcome();
+        const msg = document.createElement('div');
+        msg.className = 'message bot';
+        msg.innerHTML = `
+        <div class="avatar bot">${BOT_SVG}</div>
+        <div class="error-bubble">Não foi possível conectar ao servidor. Verifique sua conexão e tente novamente.</div>`;
+        chat.appendChild(msg);
+        chat.scrollTop = chat.scrollHeight;
+      }
+
+      isLoading = false;
+      sendBtn.disabled = false;
+      input.focus();
+    }
+
+    // Hide mic if not supported
+    const isOpera = navigator.userAgent.includes('OPR') || navigator.userAgent.includes('Opera');
+    const hasSTT = ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window);
+    if (!hasSTT || isOpera) {
+      document.getElementById('micBtn').style.display = 'none';
+    }
+
     input.focus();
-  }
-
-  // Hide mic if not supported
-  const isOpera = navigator.userAgent.includes('OPR') || navigator.userAgent.includes('Opera');
-  const hasSTT  = ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window);
-  if (!hasSTT || isOpera) {
-    document.getElementById('micBtn').style.display = 'none';
-  }
-
-  input.focus();
-</script>
+  </script>
 </body>
+
 </html>
